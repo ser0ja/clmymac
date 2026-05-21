@@ -12,9 +12,7 @@ RESET='\033[0m'
 total_freed=0
 
 # Дополнительные директории для очистки (редактируй по необходимости)
-EXTRA_DIRS=(
-  "/Library/Developer/CoreSimulator/Caches/dyld"
-)
+EXTRA_DIRS=()
 
 dir_size() {
   du -sh "$1" 2>/dev/null | cut -f1
@@ -127,6 +125,69 @@ if command -v brew &>/dev/null; then
 else
   echo -e "${CYAN}Homebrew:${RESET} не установлен, пропуск"
 fi
+
+# Системный кэш
+clean_step "Системный кэш" "/Library/Caches" sudo
+
+# macOS temp (/private/var/folders)
+echo
+if [[ -d /private/var/folders ]]; then
+  size=$(dir_size /private/var/folders)
+  bytes=$(dir_bytes /private/var/folders)
+  echo -e "${BOLD}macOS temp${RESET} (/private/var/folders)"
+  echo -e "  Размер: ${RED}${size}${RESET}"
+  if ask "  Очистить?"; then
+    sudo find /private/var/folders -mindepth 1 -maxdepth 3 -name "*.lock" -o -name "*.tmp" -delete 2>/dev/null || true
+    total_freed=$((total_freed + bytes))
+    echo -e "  ${GREEN}Готово.${RESET}"
+  else
+    echo -e "  Пропуск."
+  fi
+fi
+
+# Xcode
+echo
+echo -e "${BOLD}--- Xcode ---${RESET}"
+clean_step "DerivedData" "$HOME/Library/Developer/Xcode/DerivedData"
+clean_step "Archives" "$HOME/Library/Developer/Xcode/Archives"
+clean_step "CoreSimulator" "$HOME/Library/Developer/CoreSimulator" sudo
+
+# Android
+echo
+echo -e "${BOLD}--- Android ---${RESET}"
+clean_step "Android SDK/AVD" "$HOME/Library/Android"
+clean_step "Android кэш" "$HOME/.android/cache"
+
+# Кэши сборки
+echo
+echo -e "${BOLD}--- Кэши сборки ---${RESET}"
+clean_step "Gradle" "$HOME/.gradle/caches"
+clean_step "Cargo (registry)" "$HOME/.cargo/registry"
+clean_step "Go modules" "$HOME/go/pkg/mod/cache"
+clean_step "npm" "$HOME/.npm"
+clean_step "pnpm" "$HOME/Library/pnpm/store"
+
+# Docker
+echo
+if command -v docker &>/dev/null; then
+  echo -e "${BOLD}Docker — неиспользуемые данные${RESET}"
+  if ask "  Запустить docker system prune?"; then
+    docker system prune -f 2>/dev/null || true
+    echo -e "  ${GREEN}Готово.${RESET}"
+  else
+    echo -e "  Пропуск."
+  fi
+else
+  echo -e "${CYAN}Docker:${RESET} не установлен, пропуск"
+fi
+
+# Виртуальные машины
+echo
+echo -e "${BOLD}--- Виртуальные машины ---${RESET}"
+clean_step "Parallels" "$HOME/Parallels"
+clean_step "VMware" "$HOME/Virtual Machines"
+clean_step "UTM" "$HOME/Library/Containers/com.utmapp.UTM"
+clean_step "Colima" "$HOME/.colima"
 
 # Дополнительные директории
 if (( ${#EXTRA_DIRS[@]} > 0 )); then
