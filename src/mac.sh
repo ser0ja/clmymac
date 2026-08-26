@@ -25,6 +25,15 @@ dir_bytes() {
   echo "${kb:-0}"
 }
 
+human_size() {
+  awk -v b="${1:-0}" 'BEGIN {
+    if (b <= 0) printf "?"
+    else if (b >= 1073741824) printf "%.1f ГБ", b / 1073741824
+    else if (b >= 1048576) printf "%.0f МБ", b / 1048576
+    else printf "%d Б", b
+  }'
+}
+
 ask() {
   local prompt="$1"
   echo -en "${YELLOW}${prompt} [y/N] ${RESET}"
@@ -173,15 +182,65 @@ clean_step "tvOS DeviceSupport" "$HOME/Library/Developer/Xcode/tvOS DeviceSuppor
 clean_step "CoreSimulator Caches" "$HOME/Library/Developer/CoreSimulator/Caches"
 clean_step "CoreSimulator" "$HOME/Library/Developer/CoreSimulator" sudo
 
-# Удалить недоступные симуляторы (после обновлений Xcode/iOS)
-if command -v xcrun &>/dev/null && [[ -d "$HOME/Library/Developer/CoreSimulator" ]]; then
+# simctl из активного toolchain; фолбэк на Xcode.app,
+# если xcode-select указывает на CommandLineTools
+SIMCTL=$(xcrun --find simctl 2>/dev/null || true)
+if [[ -z "$SIMCTL" && -x "/Applications/Xcode.app/Contents/Developer/usr/bin/simctl" ]]; then
+  SIMCTL="/Applications/Xcode.app/Contents/Developer/usr/bin/simctl"
+fi
+
+if [[ -z "$SIMCTL" ]]; then
+  echo
+  echo -e "${CYAN}simctl:${RESET} не найден, шаги симуляторов пропущены"
+else
+  # Удалить недоступные симуляторы (после обновлений Xcode/iOS)
   echo
   echo -e "${BOLD}Недоступные симуляторы${RESET}"
   if ask "  Удалить (simctl delete unavailable)?"; then
-    xcrun simctl delete unavailable 2>/dev/null || true
+    "$SIMCTL" delete unavailable 2>/dev/null || true
     echo -e "  ${GREEN}Готово.${RESET}"
   else
     echo -e "  Пропуск."
+  fi
+
+  # ВНИМАНИЕ (спорные): runtime-образы — не кэш, а сами системы для симулятора.
+  # Лежат в /Library/Developer/CoreSimulator/Images и
+  # /System/Library/AssetsV2/com_apple_MobileAsset_*SimulatorRuntime.
+  # Удалять только через simctl: rm -rf оставит битую регистрацию в CoreSimulator.
+  echo
+  echo -e "${BOLD}Runtime-образы симуляторов${RESET} (не кэш — качаются заново, 4-9 ГБ каждый)"
+  sim_runtimes=()
+  while IFS= read -r line; do
+    [[ -n "$line" ]] && sim_runtimes+=("$line")
+  done < <("$SIMCTL" runtime list 2>/dev/null | grep -E ' - [0-9A-Fa-f-]{36} \(')
+
+  # uuid -> размер в байтах (simctl отдаёт sizeBytes только в JSON)
+  sim_sizes=$("$SIMCTL" runtime list -j 2>/dev/null | awk '
+    /^  "/ && /" : \{$/ { uuid=$1; gsub(/"/, "", uuid); next }
+    /"sizeBytes"/ && uuid != "" { bytes=$0; gsub(/[^0-9]/, "", bytes); print uuid, bytes }
+  ')
+
+  if (( ${#sim_runtimes[@]} == 0 )); then
+    echo -e "  Установленных runtime не найдено."
+  else
+    for line in "${sim_runtimes[@]}"; do
+      name=${line%% - *}
+      rest=${line#* - }
+      uuid=${rest%% *}
+      bytes=$(printf '%s\n' "$sim_sizes" | awk -v u="$uuid" '$1 == u {print $2}')
+      echo
+      echo -e "  ${BOLD}${name}${RESET} — ${RED}$(human_size "${bytes:-0}")${RESET}"
+      if ask "    Удалить?"; then
+        if "$SIMCTL" runtime delete "$uuid" 2>/dev/null; then
+          total_freed=$((total_freed + ${bytes:-0} / 1024))
+          echo -e "    ${GREEN}Готово.${RESET}"
+        else
+          echo -e "    ${RED}Не удалось удалить (возможно, runtime используется).${RESET}"
+        fi
+      else
+        echo -e "    Пропуск."
+      fi
+    done
   fi
 fi
 

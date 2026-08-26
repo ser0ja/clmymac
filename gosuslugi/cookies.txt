@@ -1,0 +1,28 @@
+# Netscape HTTP Cookie File
+# https://curl.haxx.se/rfc/cookie_spec.html
+# This is a generated file! Do not edit.
+
+.gosuslugi.ru	TRUE	/	TRUE	1803469364	_idp_authn_id	phone%3A%252B7(960)5722997
+.gosuslugi.ru	TRUE	/	FALSE	0	TS019e7a72	01474e76251ba9d133f0991960af09b0f9eb78a9e78cc4a16dff29b2232aec747de40a587d74f44715a64f5d23dc42403cca8f988b
+.gosuslugi.ru	TRUE	/	FALSE	1821769695	userSelectedLanguage	ru
+.gosuslugi.ru	TRUE	/	FALSE	1821769695	nau	7f682e5f-4420-36bb-1d62-caa0361b0086
+.gosuslugi.ru	TRUE	/	FALSE	0	u	240305533
+.gosuslugi.ru	TRUE	/	FALSE	0	userSelectedRegion	45000000000
+.gosuslugi.ru	TRUE	/	FALSE	0	userSelectedFias	0c5b2444-70a0-4932-980c-b4dc0d3f02b5
+.gosuslugi.ru	TRUE	/	FALSE	1790336539	gsmFingerprint	53a32c71-d898-4d78-9855-c86fd204d3b0
+.gosuslugi.ru	TRUE	/	FALSE	0	showed_onboarding_places	
+.gosuslugi.ru	TRUE	/	FALSE	0	prev-gu-role	P
+www.gosuslugi.ru	FALSE	/	FALSE	1787758966	ns-nlb	ffffffffaf12361245525d5f4f58455e445a4a423660
+www.gosuslugi.ru	FALSE	/	FALSE	1787746338	c_Vuf7rRpXrbqk	2031363FE3737B00CF6B56169997C8C7
+www.gosuslugi.ru	FALSE	/	FALSE	1787746338	c_Vuf7rRpXrbqk_2	12090
+www.gosuslugi.ru	FALSE	/	FALSE	1787746338	c_Vuf7rRpXrbqk_3	1800073547
+.gosuslugi.ru	TRUE	/	FALSE	1787746365	usi_portal	rBopZGqO0RoNbcOXgaOHAg==
+www.gosuslugi.ru	FALSE	/	FALSE	0	TS011c75c2	01474e762522a57dfc0e0759673e8bf773556675839bc58e1ff6cc179ac829674bba84625ad0bbf45cf7aa013ee728bc7c1c92c066
+.gosuslugi.ru	TRUE	/	FALSE	1787755339	gsmSessionId	06651931-6de6-4a74-a15b-498c14fb0f69
+.gosuslugi.ru	TRUE	/	FALSE	1787755339	gsmTimestamp	1787744539248
+www.gosuslugi.ru	FALSE	/	FALSE	1787744687	NSC_q00qhvtubu	ffffffffaf12375045525d5f4f58455e445a4a423660
+.gosuslugi.ru	TRUE	/	FALSE	1787745440	test_user	""
+.gosuslugi.ru	TRUE	/	TRUE	1787755340	esia_termination_id	e14cc5ac-42da-47bf-aca0-ca78a5dd44ae
+.gosuslugi.ru	TRUE	/	FALSE	1787746340	fhp	rBBoO2qO0RtVrWDJQE3RAg==
+.gosuslugi.ru	TRUE	/	TRUE	1787755364	acc_t	eyJ2ZXIiOjEsInR5cCI6IkpXVCIsIng1dCNTdDI1NiI6IkdZZENVdElPMGExanlBTW5aZWdNX1ZHMXVnaTBucHNZakc5cG1tZ3puRHciLCJzYnQiOiJhY2Nlc3MiLCJhbGciOiJHT1NUMzQxMF8yMDEyXzI1NiJ9.eyJuYmYiOjE3ODc3NDQ1NjQsInNjb3BlIjoiaHR0cDpcL1wvZXNpYS5nb3N1c2x1Z2kucnVcL3Vzcl9zZWM_bW9kZT13Jm9pZD0yNDAzMDU1MzMgaHR0cDpcL1wvZXNpYS5nb3N1c2x1Z2kucnVcL3Vzcl9pbmY_bW9kZT13Jm9pZD0yNDAzMDU1MzMgaHR0cDpcL1wvZXNpYS5nb3N1c2x1Z2kucnVcL3Vzcl90cm0_bW9kZT13Jm9pZD0yNDAzMDU1MzMgb3BlbmlkIiwiaXNzIjoiaHR0cDpcL1wvZXNpYS5nb3N1c2x1Z2kucnVcLyIsInVybjplc2lhOnNpZCI6IjUxODUxYjViLTZkMWMtNDJlNC05MjFhLWJjNmU3MWEwYTUyMyIsInVybjplc2lhOnNial9pZCI6MjQwMzA1NTMzLCJleHAiOjE3ODc3NTUzNjQsImlhdCI6MTc4Nzc0NDU2NCwiY2xpZW50X2lkIjoiUEdVIn0.uYG8fmUv1-gZoolsarjSTHz4RYqlRxBUFoEZedp3mcEq4H6Q3WOXqK9xkaOyOkRSA91Iu9sl9eqYlxVv4trlAQ
+.gosuslugi.ru	TRUE	/	TRUE	1787755364	si	baf6242e-25eb-4af7-8733-1746c9f4a17e
