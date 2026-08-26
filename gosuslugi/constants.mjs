@@ -23,7 +23,7 @@ export const USER_AGENT =
   'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36'
 
 export const POLL_MIN_MS = 2 * 60 * 1000
-export const POLL_MAX_MS = 4 * 60 * 1000
+export const POLL_MAX_MS = 3 * 60 * 1000
 export const REQUEST_TIMEOUT_MS = 30 * 1000
 
 /** За сколько до конца сессии предупреждать, что пора обновить cookie-файл. */
